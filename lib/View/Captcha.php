@@ -64,7 +64,7 @@ class View_Captcha extends \View {
     }
     private function getCaptchaText(){
         $string = substr( str_shuffle( $this->alphanum ), 2, $this->text_length );
-        $this->api->memorize($this->api->page.'_captcha',$string);
+        $this->controller->memorizeCaptcha($string);
         return $string;
     }
 

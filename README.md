@@ -1,4 +1,4 @@
 x_captcha
 =========
 
-captcha plugon for atk4
+captcha plugin for atk4

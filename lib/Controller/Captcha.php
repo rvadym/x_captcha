@@ -31,6 +31,7 @@ class Controller_Captcha extends \Controller {
         } else {
             $view = $this->owner->aboveField();
             $view->setHTML('<img src="'.$this->api->url(null,array('captcha_view'=>'true')).'" />');
+            $view->js('click')->reload();
         }
     }
 }

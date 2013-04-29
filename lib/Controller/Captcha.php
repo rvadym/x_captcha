@@ -21,6 +21,8 @@ class Controller_Captcha extends \Controller {
         $this->api->memorize($this->owner->name.'_captcha_value',$value);
     }
     function recallCaptcha() {
+        if ($this->api->recall($this->owner->name.'_captcha_value')===null)
+            $this->api->js()->univ()->errorMessage('Error! Reload captcha and try again!')->execute();
         return $this->api->recall($this->owner->name.'_captcha_value');
     }
     private function addCaptcha() {

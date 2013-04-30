@@ -5,7 +5,7 @@ captcha plugin for atk4
 
 
         $form = $this->add('Form');
-        $form->addField('line','captcha')->add('x_captcha/Controller_Captcha');
+        $form->addField('Line','captcha')->add('x_captcha/Controller_Captcha');
         $form->addSubmit('Check');
         $form->onSubmit(function($form){
             if ($form->get('captcha') == $form->getElement('captcha')->captcha->recallCaptcha()) {

@@ -8,6 +8,7 @@
  */
 namespace x_captcha;
 class Controller_Captcha extends \Controller {
+    public $view_class = 'x_captcha\View_Captcha';
     function init() {
         parent::init();
         if (!class_exists('\Imagick',false)) throw $this->exception('Imagick is not installed');
@@ -27,7 +28,7 @@ class Controller_Captcha extends \Controller {
     }
     private function addCaptcha() {
         if ($_GET['captcha_view']) {
-            $this->add('x_captcha\View_Captcha',array(
+            $this->add($this->view_class,array(
                 'controller' => $this,
             ));
         } else {

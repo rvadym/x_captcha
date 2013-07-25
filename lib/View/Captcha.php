@@ -9,10 +9,15 @@
 namespace x_captcha;
 class View_Captcha extends \View {
     public $Imagick;
-    public $bg_color = 'white';
-    public $alphanum = 'ABXZRMHTL23456789';
-    public $image_format = 'png';
-    public $text_length = 6;
+    public $bg_color           = 'white';
+    public $alphanum           = 'ABCDIFGHIJKLMNOPQRSTUVWXYZ1234567890'; // 'abcdefghijklmnopqrstuvwxyz1234567890'
+    public $image_format       = 'png';
+    public $image_width        = 85;
+    public $image_height       = 30;
+    public $text_length        = 6;
+    public $font_size          = 20;
+    public $text_position_top  = 4;
+    public $text_position_left = 25;
     function init() {
         parent::init();
         $this->getImage();
@@ -38,23 +43,23 @@ class View_Captcha extends \View {
 
         /* Set font and font size. You can also specify /path/to/font.ttf */
         //$ImagickDraw->setFont( 'Helvetica Regular' );
-        $ImagickDraw->setFontSize( 20 );
+        $ImagickDraw->setFontSize( $this->font_size );
 
         /* Create new empty image */
-        $this->Imagick->newImage( 85, 30, $bg );
+        $this->Imagick->newImage( $this->image_width, $this->image_height, $bg );
 
         /* Write the text on the image */
-        $this->Imagick->annotateImage( $ImagickDraw, 4, 20, 0, $this->getCaptchaText() );
+        $this->Imagick->annotateImage( $ImagickDraw, $this->text_position_top, $this->text_position_left, 0, $this->getCaptchaText() );
 
         /* Add some swirl */
         $this->Imagick->swirlImage( 20 );
 
         /* Create a few random lines */
-        $ImagickDraw->line( rand( 0, 70 ), rand( 0, 30 ), rand( 0, 70 ), rand( 0, 30 ) );
-        $ImagickDraw->line( rand( 0, 70 ), rand( 0, 30 ), rand( 0, 70 ), rand( 0, 30 ) );
-        $ImagickDraw->line( rand( 0, 70 ), rand( 0, 30 ), rand( 0, 70 ), rand( 0, 30 ) );
-        $ImagickDraw->line( rand( 0, 70 ), rand( 0, 30 ), rand( 0, 70 ), rand( 0, 30 ) );
-        $ImagickDraw->line( rand( 0, 70 ), rand( 0, 30 ), rand( 0, 70 ), rand( 0, 30 ) );
+        $ImagickDraw->line( rand( 0, $this->image_width ), rand( 0, $this->image_height ), rand( 0, $this->image_width ), rand( 0, $this->image_height ) );
+        $ImagickDraw->line( rand( 0, $this->image_width ), rand( 0, $this->image_height ), rand( 0, $this->image_width ), rand( 0, $this->image_height ) );
+        $ImagickDraw->line( rand( 0, $this->image_width ), rand( 0, $this->image_height ), rand( 0, $this->image_width ), rand( 0, $this->image_height ) );
+        $ImagickDraw->line( rand( 0, $this->image_width ), rand( 0, $this->image_height ), rand( 0, $this->image_width ), rand( 0, $this->image_height ) );
+        $ImagickDraw->line( rand( 0, $this->image_width ), rand( 0, $this->image_height ), rand( 0, $this->image_width ), rand( 0, $this->image_height ) );
 
         /* Draw the ImagickDraw object contents to the image. */
         $this->Imagick->drawImage( $ImagickDraw );

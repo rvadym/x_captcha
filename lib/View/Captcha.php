@@ -16,8 +16,8 @@ class View_Captcha extends \View {
     public $image_height       = 30;
     public $text_length        = 6;
     public $font_size          = 20;
-    public $text_position_top  = 4;
-    public $text_position_left = 25;
+    public $text_position_top  = 25;
+    public $text_position_left = 4;
     function init() {
         parent::init();
         $this->getImage();
@@ -49,7 +49,7 @@ class View_Captcha extends \View {
         $this->Imagick->newImage( $this->image_width, $this->image_height, $bg );
 
         /* Write the text on the image */
-        $this->Imagick->annotateImage( $ImagickDraw, $this->text_position_top, $this->text_position_left, 0, $this->getCaptchaText() );
+        $this->Imagick->annotateImage( $ImagickDraw, $this->text_position_left, $this->text_position_top, 0, $this->getCaptchaText() );
 
         /* Add some swirl */
         $this->Imagick->swirlImage( 20 );

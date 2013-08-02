@@ -9,6 +9,8 @@
 namespace x_captcha;
 class Controller_Captcha extends \Controller {
     public $view_class = 'x_captcha\View_Captcha';
+    public $captcha_session_id = null;
+    public $session_name;
     function init() {
         parent::init();
         if (!class_exists('\Imagick',false)) throw $this->exception('Imagick is not installed');
@@ -16,15 +18,17 @@ class Controller_Captcha extends \Controller {
 
         $this->owner->captcha = $this;
 
+        $this->session_name = $this->owner->name.'_'.$this->captcha_session_id.'_captcha_value';
+
         $this->addCaptcha();
     }
     function memorizeCaptcha($value) {
-        $this->api->memorize($this->owner->name.'_captcha_value',$value);
+        $this->api->memorize($this->session_name,$value);
     }
     function recallCaptcha() {
-        if ($this->api->recall($this->owner->name.'_captcha_value')===null)
+        if ($this->api->recall($this->session_name)===null)
             $this->api->js()->univ()->errorMessage('Error! Reload captcha and try again!')->execute();
-        return $this->api->recall($this->owner->name.'_captcha_value');
+        return $this->api->recall($this->session_name);
     }
     private function addCaptcha() {
         if ($_GET['captcha_view']) {

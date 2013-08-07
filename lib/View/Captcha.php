@@ -24,8 +24,10 @@ class View_Captcha extends \View {
     }
     function getImage() {
         $this->createImage();
+        $image = $this->Imagick->getImageBlob();
         header( "Content-Type: image/{$this->Imagick->getImageFormat()}" );
-        echo $this->Imagick->getImageBlob( );
+        header( "Content-Length: ". $this->Imagick->getImageLength() );
+        echo $image;
         exit();
     }
     private function createImage() {

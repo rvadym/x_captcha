@@ -18,6 +18,7 @@ class View_Captcha extends \View {
     public $font_size          = 20;
     public $text_position_top  = 25;
     public $text_position_left = 4;
+    public $font = null;
     function init() {
         parent::init();
         $this->getImage();
@@ -42,7 +43,7 @@ class View_Captcha extends \View {
         $ImagickDraw = new \ImagickDraw();
 
         /* Set font and font size. You can also specify /path/to/font.ttf */
-        //$ImagickDraw->setFont( 'Helvetica Regular' );
+        if ($this->font) $ImagickDraw->setFont($this->font);
         $ImagickDraw->setFontSize( $this->font_size );
 
         /* Create new empty image */
@@ -68,9 +69,20 @@ class View_Captcha extends \View {
         $this->Imagick->setImageFormat( $this->image_format );
     }
     private function getCaptchaText(){
-        $string = substr( str_shuffle( $this->alphanum ), 2, $this->text_length );
+        $string = mb_substr( $this->unicode_shuffle( $this->alphanum, strlen($this->alphanum) ), 2, $this->text_length );
         $this->controller->memorizeCaptcha($string);
         return $string;
+    }
+
+    private function unicode_shuffle($string, $chars, $format = 'UTF-8') {
+        for($i=0; $i<$chars; $i++)
+            $rands[$i] = rand(0, mb_strlen($string, $format));
+            $s = NULL;
+
+        foreach($rands as $r)
+            $s.= mb_substr($string, $r, 1, $format);
+
+        return $s;
     }
 
 

@@ -11,6 +11,7 @@ class Controller_Captcha extends \Controller {
     public $view_class = 'x_captcha\View_Captcha';
     public $captcha_session_id = null;
     public $session_name;
+    public $view;
     function init() {
         parent::init();
         if (!class_exists('\Imagick',false)) throw $this->exception('Imagick is not installed');
@@ -41,15 +42,18 @@ class Controller_Captcha extends \Controller {
         }
         return false;
     }
+    function reloadCaptcha(){
+        $this->view->js()->reload()->execute();
+    }
     private function addCaptcha() {
         if ($_GET['captcha_view']) {
             $this->add($this->view_class,array(
                 'controller' => $this,
             ));
         } else {
-            $view = $this->owner->aboveField();
-            $view->setHTML('<img style="cursor:pointer" src="'.$this->api->url(null,array('captcha_view'=>'true','rand'=>md5(microtime()))).'" />');
-            $view->js('click')->reload();
+            $this->view = $this->owner->aboveField();
+            $this->view->setHTML('<img style="cursor:pointer" src="'.$this->api->url(null,array('captcha_view'=>'true','rand'=>md5(microtime()))).'" />');
+            $this->view->js('click')->reload();
         }
     }
 }
